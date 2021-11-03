@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function login() {
+            let username = $("#username").val();
+            let password = $("#password").val();
+            let user = {
+                username: username,
+                password: password
+            }
+            $.ajax({
+                url: "http://localhost:8080/api/login",
+                type: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                data: JSON.stringify(user),
+                success: function (result) {
+                    localStorage.setItem("user", JSON.stringify(result));
+                    window.location.href="http://localhost:8080/product";
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<input type="text" id="username" placeholder="username">
+<input type="password" id="password" placeholder="password">
+<button onclick="login()">Login</button>
+</body>
+</html>

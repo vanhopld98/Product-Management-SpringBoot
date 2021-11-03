@@ -1,5 +1,7 @@
+let accessToken = JSON.parse(localStorage.getItem("user"));
+
 $(document).ready(function () {
-        getAll()
+    getAll()
         $("#q").keypress(function (event) {
             if (event.keyCode === 13) {
                 $("#search").click();
@@ -12,6 +14,9 @@ function getAll() {
     $.ajax({
         url: "http://localhost:8080/api/product",
         type: "GET",
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
         success: function (product) {
             if (product.content.length === 0) {
                 $("#list").html(
@@ -53,6 +58,9 @@ function searchProductByName() {
     $.ajax({
         url: `http://localhost:8080/api/product` + `?q=${search}`,
         type: 'GET',
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
         data: search,
         success: function (product) {
             if (product.content.length === 0) {
@@ -77,12 +85,19 @@ function showCategory(category) {
 }
 
 function showCategories() {
-    $.getJSON("http://localhost:8080/api/category", function (category) {
-        let content = "";
-        for (let i = 0; i < category.content.length; i++) {
-            content += showCategory(category.content[i])
+    $.ajax({
+        url:"http://localhost:8080/api/category",
+        type:'GET',
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
+        success:function (category) {
+            let content = "";
+            for (let i = 0; i < category.content.length; i++) {
+                content += showCategory(category.content[i])
+            }
+            $(".category").html(content)
         }
-        $(".category").html(content)
     })
 }
 
@@ -112,7 +127,8 @@ function create() {
     $.ajax({
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+accessToken.token
         },
         url: `http://localhost:8080/api/product/`,
         type: 'POST',
@@ -128,6 +144,9 @@ function showEditProduct(id) {
     $.ajax({
         url: `http://localhost:8080/api/product/` + id,
         type: "GET",
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
         success: function (product) {
             $("#id").val(product.id)
             $("#name").val(product.name)
@@ -146,6 +165,9 @@ function showDeleteProduct(id) {
     $.ajax({
         url: `http://localhost:8080/api/product/` + id,
         type: "GET",
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
         success: function (product) {
             $("#idProductDelete").html(product.id)
             $("#nameProductDelete").html(product.name)
@@ -164,6 +186,9 @@ function remove(id) {
     $.ajax({
         type: "DELETE",
         url: `http://localhost:8080/api/product` + `/${id}`,
+        headers:{
+            'Authorization': 'Bearer '+accessToken.token
+        },
         success: getAll
     });
 }
@@ -186,7 +211,8 @@ function update() {
     $.ajax({
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+accessToken.token
         },
         url: `http://localhost:8080/api/product/` + id,
         type: "PUT",
