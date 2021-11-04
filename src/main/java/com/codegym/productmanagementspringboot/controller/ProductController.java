@@ -1,20 +1,30 @@
 package com.codegym.productmanagementspringboot.controller;
 
 import com.codegym.productmanagementspringboot.model.Product;
+import com.codegym.productmanagementspringboot.model.ProductForm;
 import com.codegym.productmanagementspringboot.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
+
+    @Value("${file-upload}")
+    private String fileUpload;
+
     @Autowired
     private IProductService productService;
 
@@ -30,16 +40,32 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<Product> create(ProductForm productForm) {
+        MultipartFile multipartFile = productForm.getImage();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(productForm.getImage().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Product product = new Product(productForm.getId(), productForm.getName(), productForm.getPrice(), productForm.getDescription(), productForm.getCategory(), fileName);
         return new ResponseEntity<>(productService.save(product), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable Long id, ProductForm productForm) {
+        MultipartFile multipartFile = productForm.getImage();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(productForm.getImage().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Optional<Product> productOptional = productService.findById(id);
         if (!productOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Product product = new Product(productForm.getId(), productForm.getName(), productForm.getPrice(), productForm.getDescription(), productForm.getCategory(), fileName);
         return new ResponseEntity<>(productService.save(product), HttpStatus.OK);
     }
 

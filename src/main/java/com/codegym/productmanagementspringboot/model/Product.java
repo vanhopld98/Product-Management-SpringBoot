@@ -1,6 +1,7 @@
 package com.codegym.productmanagementspringboot.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Product {
     private String description;
     @ManyToOne
     private Category category;
+    private String image;
 
     public Category getCategory() {
         return category;
@@ -24,6 +26,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Long getId() {

@@ -38,6 +38,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Price</th>
                     <th scope="col">Category</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -96,26 +97,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div>
-                            <label for="id" class="form-label">Id Product:</label>
-                            <input type="text" id="id" class="form-control" disabled/>
+                    <form id="updateProduct">
+                        <div class="mb-3">
+                            <label for="idProductUpdate" class="form-label">Id:</label>
+                            <input type="text" name="id" class="form-control" id="idProductUpdate" disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name Product:</label>
-                            <input type="text" class="form-control" id="name">
+                            <label for="nameProductUpdate" class="form-label">Name Product:</label>
+                            <input type="text" name="name" class="form-control" id="nameProductUpdate">
                         </div>
                         <div class="mb-3">
-                            <label for="price" class="form-label">Price :</label>
-                            <input type="text" class="form-control" id="price">
+                            <label for="priceProductUpdate" class="form-label">Price :</label>
+                            <input type="text" name="price" class="form-control" id="priceProductUpdate">
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description:</label>
-                            <textarea class="form-control" id="description"></textarea>
+                            <label for="descriptionProductUpdate" class="form-label">Description:</label>
+                            <textarea class="form-control" name="description" id="descriptionProductUpdate"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="category" class="form-label">Category:</label>
-                            <select class="form-select category" id="category">
+                            <label for="imageProductUpdate" class="form-label">Image:</label>
+                            <input type="file" class="form-control" name="image" id="imageProductUpdate"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoryProductUpdate" class="form-label">Category:</label>
+                            <select class="form-select category" name="category" id="categoryProductUpdate">
 
                             </select>
                         </div>
@@ -136,26 +141,30 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Create Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="createProduct">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name Product:</label>
-                        <input type="text" class="form-control" id="nameProductCreate">
+                        <label for="nameProductCreate" class="form-label">Name Product:</label>
+                        <input type="text" name="name" class="form-control" id="nameProductCreate">
                     </div>
                     <div class="mb-3">
-                        <label for="price" class="form-label">Price :</label>
-                        <input type="text" class="form-control" id="priceProductCreate">
+                        <label for="priceProductCreate" class="form-label">Price :</label>
+                        <input type="text" name="price" class="form-control" id="priceProductCreate">
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="descriptionProductCreate"></textarea>
+                        <label for="descriptionProductCreate" class="form-label">Description:</label>
+                        <textarea class="form-control" name="description" id="descriptionProductCreate"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="category" class="form-label">Category:</label>
-                        <select class="form-select category" id="categoryProductCreate">
+                        <label for="imageProductCreate" class="form-label">Image:</label>
+                        <input type="file" class="form-control" name="image" id="imageProductCreate"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryProductCreate" class="form-label">Category:</label>
+                        <select class="form-select category" name="category" id="categoryProductCreate">
 
                         </select>
                     </div>

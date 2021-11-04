@@ -42,6 +42,7 @@ function getProduct(product) {
                 <td>${product.description}</td>
                 <td>${product.price}</td>
                 <td>${product.category.name}</td>
+                <td><img src="${product.image}" width="192" height="108" alt="image"></td>
                 <td>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showEditProduct(${product.id})" data-bs-target="#modalEdit">
                         Edit
@@ -105,6 +106,8 @@ function clear() {
     $("#nameProductCreate").val("")
     $("#priceProductCreate").val("")
     $("#descriptionProductCreate").val("")
+    $("#imageProductCreate").val("")
+
 }
 
 function showCreateProduct() {
@@ -112,27 +115,20 @@ function showCreateProduct() {
 }
 
 function create() {
-    let name = $("#nameProductCreate").val()
-    let price = $("#priceProductCreate").val()
-    let description = $("#descriptionProductCreate").val()
-    let category = $("#categoryProductCreate").val()
-    let newProduct = {
-        name: name,
-        price: price,
-        description: description,
-        category: {
-            id: category
-        }
-    }
+   let form = new FormData($("#createProduct")[0]);
+
     $.ajax({
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer '+accessToken.token
         },
         url: `http://localhost:8080/api/product/`,
         type: 'POST',
-        data: JSON.stringify(newProduct),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        data: form,
         success: function () {
             getAll();
             clear();
@@ -148,14 +144,14 @@ function showEditProduct(id) {
             'Authorization': 'Bearer '+accessToken.token
         },
         success: function (product) {
-            $("#id").val(product.id)
-            $("#name").val(product.name)
-            $("#price").val(product.price)
-            $("#description").val(product.description)
-            $("#category").val(product.category.id)
+            $("#idProductUpdate").val(product.id)
+            $("#nameProductUpdate").val(product.name)
+            $("#priceProductUpdate").val(product.price)
+            $("#descriptionProductUpdate").val(product.description)
+            $("#categoryProductUpdate").val(product.category.id)
             showCategories();
             $("#update").click(function () {
-                update();
+                update(id);
             })
         }
     })
@@ -189,34 +185,30 @@ function remove(id) {
         headers:{
             'Authorization': 'Bearer '+accessToken.token
         },
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
         success: getAll
     });
 }
 
-function update() {
-    let id = $("#id").val();
-    let name = $("#name").val();
-    let price = $("#price").val();
-    let description = $("#description").val();
-    let category = $("#category").val();
-    let productUpdate = {
-        id: id,
-        name: name,
-        price: price,
-        description: description,
-        category: {
-            id: category
-        }
-    }
+function update(id) {
+    let form = new FormData($("#updateProduct")[0]);
     $.ajax({
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer '+accessToken.token
         },
         url: `http://localhost:8080/api/product/` + id,
         type: "PUT",
-        data: JSON.stringify(productUpdate),
-        success: getAll
+        data: form,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function () {
+            getAll()
+        }
     })
 }
